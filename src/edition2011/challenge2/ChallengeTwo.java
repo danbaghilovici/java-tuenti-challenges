@@ -1,31 +1,30 @@
-package edition2011.challenge1;
+package edition2011.challenge2;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class ChallengeOne {
+public class ChallengeTwo {
     private static final int EDITION_YEAR=2011;
-    private static final int CHALLENGE_NUMBER=1;
+    private static final int CHALLENGE_NUMBER=2;
     private static final String SAMPLE_INPUT="src/edition"+EDITION_YEAR+"/challenge"+CHALLENGE_NUMBER+"/raw/inputs/sample_input.txt";
     private static final String SAMPLE_OUTPUT="src/edition"+EDITION_YEAR+"/challenge"+CHALLENGE_NUMBER+"/raw/outputs/sample_output.txt";
     private static final String TEST_INPUT="src/edition"+EDITION_YEAR+"/challenge"+CHALLENGE_NUMBER+"/raw/inputs/test_input.txt";
     private static final String TEST_OUTPUT="src/edition"+EDITION_YEAR+"/challenge"+CHALLENGE_NUMBER+"/raw/outputs/test_output.txt";
 
-    private static final String INPUT=TEST_INPUT;
+    private static final String INPUT=SAMPLE_INPUT;
     private static final String OUTPUT="src/edition"+EDITION_YEAR+"/challenge"+CHALLENGE_NUMBER+"/raw/outputs/output.txt";
 
     public static void main(String[] args) {
-        Future<BigInteger> auxFutureObj;
+        Future<Integer> auxFutureObj;
         int number_cores = Runtime.getRuntime().availableProcessors();
         ExecutorService executorService= Executors.newFixedThreadPool(number_cores);
-        ArrayList<Future<BigInteger>> futureObjArray=new ArrayList<>();
+        ArrayList<Future<Integer>> futureObjArray=new ArrayList<>();
 
         BufferedReader bufferedReader=null;
         FileReader fileReader=null;
@@ -36,13 +35,13 @@ public class ChallengeOne {
             String currentLine;
 
             while ((currentLine = bufferedReader.readLine()) != null) {
-                String[] separatedItems=currentLine.replaceAll("(^\\s+|\\s+$)", "").split("\\s+");
-                BigInteger[] longNumbers=new BigInteger[separatedItems.length];
-                for (int i=0;i<separatedItems.length;i++){
-                    longNumbers[i]=new BigInteger(separatedItems[i]);
-
-                }
-                auxFutureObj=executorService.submit(new TaskChallengeOne(longNumbers));
+                // TO DO REGEX
+                String[] separatedItems=currentLine.split(" ");
+                char sign=separatedItems[0].charAt(1);
+                int i=Integer.parseInt(separatedItems[1]);
+                int j=Integer.parseInt(separatedItems[2].replaceAll("$",""));
+                System.out.println(""+sign+i+j);
+                auxFutureObj=executorService.submit(new TaskChallengeTwo(sign,i,j));
                 futureObjArray.add(auxFutureObj);
             }
 
@@ -68,7 +67,7 @@ public class ChallengeOne {
         for(int i=0;i<futureObjArray.size();i++){
             try {
                 auxFutureObj=futureObjArray.get(i);
-                BigInteger result=auxFutureObj.get();
+                Integer result=auxFutureObj.get();
                 System.out.println(result);
 
             } catch (InterruptedException e) {

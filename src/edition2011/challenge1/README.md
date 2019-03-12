@@ -23,3 +23,9 @@ output the sum of all the given numbers.
 
 8
 ```
+# Solution:
+The main class (`ChallengeOne`) reads the input file line by line. Each line is parsed
+to an array of `BigInteger` and then passed as an argument to a task (`TaskChallengeOne`)
+from the threadpool created previously. Each task is responsible for adding all the 
+numbers from the array of `BigInteger` that is passed as an argument and then returning it 
+to the main program.
